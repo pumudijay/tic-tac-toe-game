@@ -53,7 +53,10 @@ def isSpaceFree(board,space):
     return board[space]==' ' 
 
 def isBoardFull(board):
-    return not ' ' in board
+    for i in range(1,10):
+        if isSpaceFree(board,i):
+            return False
+    return True
 
 def makeMove(board,letter,space):
     board[space]=letter
@@ -65,24 +68,57 @@ print()
 print('Welcome to Tic Tac Toe!!')
 
 while True:
-    theBoard=[' ']*10
-    #theBoard=['1','2','3','4','5','6','7','8','9','10']
+   theBoard=[' ']*10
     playerLetter,computerLetter=inputPlayerLetter()
     turn=firstPlayer()
     print('The ' + turn + ' will go first')
 
-    if turn=='player':
-        print('player!!!')
-        printBoard(theBoard)
+    while True:
+        if turn=='player':
+            print('player!!!')
+            printBoard(theBoard)
 
-        while True:
+        
             move=getPlayerMove(theBoard)
             makeMove(theBoard,playerLetter,move)
             printBoard(theBoard)
+            print(isBoardFull(theBoard))
+            if isWon(theBoard,playerLetter):
+                print('You won!!!')
+                break
+            
+            else:
+                if isBoardFull(theBoard):
+                    print('Draw!')
+                    break
+                
+                else:
+                    #computer turn
+                    turn='computer'
 
-    elif turn=='computer':
-        print('computer!!!')
-        printBoard(theBoard)
+            
+        #computer start
+        else:
+            print('computer!!!')
+            printBoard(theBoard)
+        
+            move=getComputerMove(theBoard)
+            makeMove(theBoard,computerLetter,move)
+            printBoard(theBoard)
+            print(isBoardFull(theBoard))
+            if isWon(theBoard,computerLetter):
+                print('You lose!!!')
+                break
+            
+            else:
+                if isBoardFull(theBoard):
+                    print('Draw!')
+                    break
+                    
+                else:
+                    #player turn
+                    turn='player'
+
         
     if not playAgain():
         break
